@@ -9,12 +9,10 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
 
-                <!-- 1) Your theme bundle -->
                 <materialDesign:BundledTheme BaseTheme="Light"
                                      PrimaryColor="Indigo"
                                      SecondaryColor="Lime" />
 
-                <!-- 2) Core MDIX defaults for v5+ -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
 
             </ResourceDictionary.MergedDictionaries>

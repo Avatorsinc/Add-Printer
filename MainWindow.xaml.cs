@@ -2,34 +2,34 @@
 using System.Collections.ObjectModel;
 using System.DirectoryServices;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 using MaterialDesignThemes.Wpf;
 
 namespace Add_Printer
 {
     public partial class MainWindow : Window
     {
-        // Use target-typed new (IDE0090)
         private readonly PaletteHelper _paletteHelper = new();
 
-        // Service account credentials (for searching in dsg.dk domain)
-        private readonly string _domain = "dsg.dk";           // Your domain name
-        private readonly string _username = "svcAccount";     // Service account username
-        private readonly string _password = "Password123";    // Service account password
+        private readonly string _domain = "dsg.dk";
+        private readonly string _username = "ServiceAccount";
+        private readonly string _password = "Password";
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        // Info button click handler to show about info
         private void Info_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show(
                 "Add Printer App v1.0\n\n" +
                 "Search for on-prem AD printers and install them to your PC.\n" +
+                "Right-click a printer to connect or install drivers.\n" +
                 "Light/Dark toggle in the top-right corner.",
                 "About Add Printer",
                 MessageBoxButton.OK,
@@ -37,19 +37,15 @@ namespace Add_Printer
             );
         }
 
-        // Theme toggle button click handler to switch between light and dark modes
         private void SwitchTheme_Click(object sender, RoutedEventArgs e)
         {
             var theme = _paletteHelper.GetTheme();
-            theme.SetBaseTheme(
-                theme.GetBaseTheme() == BaseTheme.Dark
-                    ? BaseTheme.Light
-                    : BaseTheme.Dark
-            );
+            theme.SetBaseTheme(theme.GetBaseTheme() == BaseTheme.Dark
+                ? BaseTheme.Light
+                : BaseTheme.Dark);
             _paletteHelper.SetTheme(theme);
         }
 
-        // Search button click handler to search printers in the "dsg.dk" domain
         private void SearchPrinters_Click(object sender, RoutedEventArgs e)
         {
             var query = SearchTextBox.Text.Trim();
@@ -67,10 +63,7 @@ namespace Add_Printer
             var printers = new ObservableCollection<PrinterInfo>();
             try
             {
-                // Construct the LDAP path to the "dsg.dk" domain
                 string ldapPath = $"LDAP://{_domain}/DC=dsg,DC=dk";
-
-                // Bind to the domain using service account credentials
                 using var entry = new DirectoryEntry(ldapPath, $"{_domain}\\{_username}", _password);
                 using var searcher = new DirectorySearcher(entry)
                 {
@@ -80,19 +73,18 @@ namespace Add_Printer
                 searcher.PropertiesToLoad.Add("serverName");
                 searcher.PropertiesToLoad.Add("printShareName");
 
-                // Search for printers and add them to the list
                 foreach (SearchResult res in searcher.FindAll())
                 {
                     string name = res.Properties["name"][0].ToString();
                     string server = res.Properties.Contains("serverName")
-                                    ? res.Properties["serverName"][0].ToString()
-                                    : null;
+                        ? res.Properties["serverName"][0].ToString()
+                        : null;
                     string share = res.Properties.Contains("printShareName")
-                                    ? res.Properties["printShareName"][0].ToString()
-                                    : name;
+                        ? res.Properties["printShareName"][0].ToString()
+                        : name;
                     string unc = server != null
-                                     ? $@"\\{server}\{share}"
-                                     : share;
+                        ? $@"\\{server}\{share}"
+                        : share;
 
                     printers.Add(new PrinterInfo
                     {
@@ -111,40 +103,98 @@ namespace Add_Printer
                 );
             }
 
-            // Set the list of printers to display in the UI
             PrintersListView.ItemsSource = printers;
         }
 
-        // Double-click event to install the selected printer
+        // Handles the double-click on the ListView
         private void PrintersListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (PrintersListView.SelectedItem is PrinterInfo pi)
+            ConnectPrinter();
+        }
+
+        // Handles the ContextMenu "Connect Printer" click
+        private void ConnectPrinterMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ConnectPrinter();
+        }
+
+        // Shared logic to add the printer for the current user
+        private void ConnectPrinter()
+        {
+            if (!(PrintersListView.SelectedItem is PrinterInfo pi)) return;
+            try
             {
-                try
+                dynamic network = Activator.CreateInstance(
+                    Type.GetTypeFromProgID("WScript.Network"));
+                network.AddWindowsPrinterConnection(pi.UncPath);
+                network.SetDefaultPrinter(pi.UncPath);
+
+                MessageBox.Show(
+                    $"Printer '{pi.DisplayName}' added for the current user.",
+                    "Printer Added",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Information
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Failed to add printer: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+            }
+        }
+
+        // ContextMenu "Install Drivers…" click
+        private void InstallDrivers_Click(object sender, RoutedEventArgs e)
+        {
+            if (!(PrintersListView.SelectedItem is PrinterInfo pi))
+            {
+                MessageBox.Show("Please select a printer first.", "Information",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var dlg = new OpenFileDialog
+            {
+                Filter = "Printer INF|*.inf",
+                Title = "Select Printer Driver INF"
+            };
+            if (dlg.ShowDialog() != true) return;
+
+            string infPath = dlg.FileName;
+            string driverName = Path.GetFileNameWithoutExtension(infPath);
+
+            try
+            {
+                Process.Start(new ProcessStartInfo
                 {
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = "rundll32.exe",
-                        Arguments = $@"printui.dll,PrintUIEntry /in /n""{pi.UncPath}""",
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    });
-                    MessageBox.Show(
-                        $"Installing printer: {pi.DisplayName}",
-                        "Printer Install",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information
-                    );
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(
-                        $"Failed to install printer: {ex.Message}",
-                        "Error",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error
-                    );
-                }
+                    FileName = "rundll32.exe",
+                    Arguments = $"printui.dll,PrintUIEntry /ia /m \"{driverName}\" /f \"{infPath}\"",
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                })?.WaitForExit();
+
+                var result = MessageBox.Show(
+                    $"Driver '{driverName}' installed successfully.\nConnect printer '{pi.DisplayName}' now?",
+                    "Driver Installed",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                );
+
+                if (result == MessageBoxResult.Yes)
+                    ConnectPrinter();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Failed to install driver: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
             }
         }
     }
