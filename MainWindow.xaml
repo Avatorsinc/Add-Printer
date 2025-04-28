@@ -1,0 +1,100 @@
+﻿<Window x:Class="Add_Printer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:Add_Printer"
+        Title="Add Printer"
+        Height="600" Width="800"
+        Style="{StaticResource MaterialDesignWindow}">
+
+    <!-- 3-row layout: Header / Content / Footer -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!-- Header -->
+            <RowDefinition Height="*"    />
+            <!-- Main content -->
+            <RowDefinition Height="Auto" />
+            <!-- Footer -->
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <DockPanel Grid.Row="0" Margin="16">
+            <!-- Title -->
+            <TextBlock Text="Add Printer"
+                 FontSize="24"
+                 FontWeight="Bold"
+                 Foreground="{DynamicResource MaterialDesignBody}"
+                 VerticalAlignment="Center"
+                 DockPanel.Dock="Left"/>
+
+            <!-- Icon buttons -->
+            <StackPanel Orientation="Horizontal"
+                  DockPanel.Dock="Right">
+                <!-- Info icon -->
+                <materialDesign:PackIcon Kind="InformationOutline"
+                                 Width="32" Height="32"
+                                 Foreground="{DynamicResource MaterialDesignBody}"
+                                 ToolTip="About"
+                                 MouseLeftButtonUp="Info_Click"
+                                 Margin="0,0,8,0"/>
+                <!-- Theme toggle icon -->
+                <materialDesign:PackIcon Kind="ThemeLightDark"
+                                 Width="32" Height="32"
+                                 Foreground="{DynamicResource MaterialDesignBody}"
+                                 ToolTip="Toggle Light/Dark"
+                                 MouseLeftButtonUp="SwitchTheme_Click"/>
+            </StackPanel>
+        </DockPanel>
+
+        <!-- MAIN CONTENT -->
+        <StackPanel Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Margin="20"
+                Width="600">
+            <!-- Search box -->
+            <TextBox x:Name="SearchTextBox"
+               materialDesign:HintAssist.Hint="Enter printer name"
+               Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+               Margin="0,0,0,16"/>
+
+            <!-- Search button -->
+            <Button Content="Search Printers"
+              Width="150" Height="40"
+              Click="SearchPrinters_Click"
+              Style="{DynamicResource MaterialDesignRaisedButton}"
+              Margin="0,0,0,20"/>
+
+            <!-- Results list -->
+            <ListView x:Name="PrintersListView"
+                Height="200"
+                MouseDoubleClick="PrintersListView_MouseDoubleClick"
+                Style="{DynamicResource MaterialDesignListView}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Printer Name"
+                            Width="500"
+                            DisplayMemberBinding="{Binding DisplayName}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+
+        <!-- FOOTER -->
+        <DockPanel Grid.Row="2" Margin="16">
+            <!-- Developed by text -->
+            <TextBlock Text="Developed by Acme Corp"
+                 FontSize="12"
+                 Foreground="{DynamicResource MaterialDesignBodySecondary}"
+                 VerticalAlignment="Center"
+                 DockPanel.Dock="Left"/>
+
+            <!-- Logo (alpha PNG) -->
+            <Image Source="pack://application:,,,/Assets/logo.png"
+             Width="48" Height="48"
+             VerticalAlignment="Center"
+             DockPanel.Dock="Right"/>
+        </DockPanel>
+    </Grid>
+</Window>

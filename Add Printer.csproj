@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>Add_Printer</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignColors" Version="5.2.1" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+    <PackageReference Include="System.DirectoryServices" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\logo.png" />
+  </ItemGroup>
+
+</Project>
