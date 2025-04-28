@@ -3,89 +3,128 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Add_Printer"
-        Title="Add Printer"
-        Height="600" Width="800"
+        Title="{DynamicResource AddPrinterTitle}"
+        Height="650" Width="900"
         Style="{StaticResource MaterialDesignWindow}">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- HEADER -->
         <DockPanel Grid.Row="0" Margin="16">
-            <TextBlock Text="Add Printer"
+            <TextBlock Text="{DynamicResource AddPrinterTitle}"
                  FontSize="24"
                  FontWeight="Bold"
                  Foreground="{DynamicResource MaterialDesignBody}"
                  VerticalAlignment="Center"
                  DockPanel.Dock="Left"/>
+
+            <ComboBox x:Name="LanguageComboBox"
+                Width="120"
+                SelectedIndex="0"
+                SelectionChanged="LanguageComboBox_SelectionChanged"
+                DockPanel.Dock="Right"
+                Margin="0,0,16,0">
+                <ComboBoxItem Tag="en-US" Content="English"/>
+                <ComboBoxItem Tag="pl-PL" Content="Polski"/>
+                <ComboBoxItem Tag="da-DK" Content="Dansk"/>
+                <ComboBoxItem Tag="de-DE" Content="Deutsch"/>
+            </ComboBox>
+
             <StackPanel Orientation="Horizontal"
                   DockPanel.Dock="Right">
-                <materialDesign:PackIcon Kind="InformationOutline"
-                                 Width="32" Height="32"
-                                 Foreground="{DynamicResource MaterialDesignBody}"
-                                 ToolTip="About"
-                                 MouseLeftButtonUp="Info_Click"
-                                 Margin="0,0,8,0"/>
-                <materialDesign:PackIcon Kind="ThemeLightDark"
-                                 Width="32" Height="32"
-                                 Foreground="{DynamicResource MaterialDesignBody}"
-                                 ToolTip="Toggle Light/Dark"
-                                 MouseLeftButtonUp="SwitchTheme_Click"/>
+                <Button Style="{StaticResource MaterialDesignIconButton}"
+                Click="Info_Click"
+                ToolTip="{DynamicResource InfoTooltip}"
+                Margin="0,0,12,0"
+                Width="40" Height="40">
+                    <materialDesign:PackIcon Kind="InformationOutline"
+                                   Width="24" Height="24"
+                                   Foreground="{DynamicResource MaterialDesignBody}"/>
+                </Button>
+                <Button Style="{StaticResource MaterialDesignIconButton}"
+                Click="SwitchTheme_Click"
+                ToolTip="{DynamicResource ToggleThemeTooltip}"
+                Width="40" Height="40">
+                    <materialDesign:PackIcon Kind="ThemeLightDark"
+                                   Width="24" Height="24"
+                                   Foreground="{DynamicResource MaterialDesignBody}"/>
+                </Button>
             </StackPanel>
         </DockPanel>
 
-        <!-- MAIN CONTENT -->
         <StackPanel Grid.Row="1"
+                Orientation="Horizontal"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                Margin="20"
-                Width="600">
-            <TextBox x:Name="SearchTextBox"
-               materialDesign:HintAssist.Hint="Enter printer name"
+                Margin="20">
+            <TextBox x:Name="NameSearchTextBox"
+               Width="300"
+               materialDesign:HintAssist.Hint="{DynamicResource SearchHint}"
                Style="{DynamicResource MaterialDesignOutlinedTextBox}"
-               Margin="0,0,0,16"/>
-
-            <Button Content="Search Printers"
+               Margin="0,0,12,0"/>
+            <TextBox x:Name="LocationSearchTextBox"
+               Width="300"
+               materialDesign:HintAssist.Hint="{DynamicResource LocationHint}"
+               Style="{DynamicResource MaterialDesignOutlinedTextBox}"
+               Margin="0,0,12,0"/>
+            <Button Content="{DynamicResource SearchButton}"
               Width="150" Height="40"
               Click="SearchPrinters_Click"
-              Style="{DynamicResource MaterialDesignRaisedButton}"
-              Margin="0,0,0,20"/>
-
-            <ListView x:Name="PrintersListView"
-                Height="200"
-                MouseDoubleClick="PrintersListView_MouseDoubleClick"
-                Style="{DynamicResource MaterialDesignListView}">
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Connect Printer" Click="ConnectPrinterMenu_Click"/>
-                        <MenuItem Header="Install Drivers…" Click="InstallDrivers_Click"/>
-                    </ContextMenu>
-                </ListView.ContextMenu>
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Printer Name"
-                            Width="500"
-                            DisplayMemberBinding="{Binding DisplayName}"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+              Style="{DynamicResource MaterialDesignRaisedButton}"/>
         </StackPanel>
+        <ListView Grid.Row="2"
+              x:Name="PrintersListView"
+              Margin="20"
+              MouseDoubleClick="PrintersListView_MouseDoubleClick"
+              Style="{DynamicResource MaterialDesignListView}">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{DynamicResource ConnectPrinterMenu}"
+                    Click="ConnectPrinterMenu_Click"/>
+                    <MenuItem Header="{DynamicResource InstallDriversMenu}"
+                    Click="InstallDrivers_Click"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="{DynamicResource ColumnHeader_PrinterName}"
+                          Width="250"
+                          DisplayMemberBinding="{Binding DisplayName}" />
+                    <GridViewColumn Header="{DynamicResource ColumnHeader_Location}"
+                          Width="200"
+                          DisplayMemberBinding="{Binding Location}" />
+                    <GridViewColumn Header="{DynamicResource ColumnHeader_Comment}"
+                          Width="200"
+                          DisplayMemberBinding="{Binding Comment}" />
+                    <GridViewColumn Header="{DynamicResource ColumnHeader_SharePath}"
+                          Width="200"
+                          DisplayMemberBinding="{Binding UncPath}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid Grid.Row="3" Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock 
+        Grid.Column="0"
+        Text="{DynamicResource DevelopedByText}"
+        FontSize="12"
+        Foreground="{DynamicResource MaterialDesignBodySecondary}"
+        VerticalAlignment="Center"
+        HorizontalAlignment="Left"/>
+            <Image 
+        Grid.Column="1"
+        Source="pack://application:,,,/Assets/logo.png"
+        Width="80" Height="40"
+        VerticalAlignment="Center"
+        HorizontalAlignment="Right"/>
+        </Grid>
 
-        <!-- FOOTER -->
-        <DockPanel Grid.Row="2" Margin="16">
-            <TextBlock Text="Developed by Workplace Management"
-                 FontSize="12"
-                 Foreground="{DynamicResource MaterialDesignBodySecondary}"
-                 VerticalAlignment="Center"
-                 DockPanel.Dock="Left"/>
-            <Image Source="pack://application:,,,/Assets/logo.png"
-             Width="48" Height="48"
-             VerticalAlignment="Center"
-             DockPanel.Dock="Right"/>
-        </DockPanel>
     </Grid>
 </Window>

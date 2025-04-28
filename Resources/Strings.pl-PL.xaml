@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="AddPrinterTitle">Dodaj drukarkę</sys:String>
+    <sys:String x:Key="SearchHint">Wprowadź nazwę drukarki</sys:String>
+    <sys:String x:Key="LocationHint">Wprowadź lokalizację</sys:String>
+    <sys:String x:Key="SearchButton">Wyszukaj drukarki</sys:String>
+    <sys:String x:Key="InfoTooltip">Informacje</sys:String>
+    <sys:String x:Key="ToggleThemeTooltip">Przełącz tryb jasny/ciemny</sys:String>
+    <sys:String x:Key="ConnectPrinterMenu">Podłącz drukarkę</sys:String>
+    <sys:String x:Key="InstallDriversMenu">Zainstaluj sterowniki…</sys:String>
+    <sys:String x:Key="ColumnHeader_PrinterName">Nazwa drukarki</sys:String>
+    <sys:String x:Key="ColumnHeader_Location">Lokalizacja</sys:String>
+    <sys:String x:Key="ColumnHeader_Comment">Komentarz</sys:String>
+    <sys:String x:Key="ColumnHeader_SharePath">Ścieżka udziału</sys:String>
+    <sys:String x:Key="DevelopedByText">Opracowane przez Workplace Management</sys:String>
+
+</ResourceDictionary>

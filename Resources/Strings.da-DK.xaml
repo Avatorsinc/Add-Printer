@@ -1,0 +1,19 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="AddPrinterTitle">Tilføj printer</sys:String>
+    <sys:String x:Key="SearchHint">Indtast printernavn</sys:String>
+    <sys:String x:Key="LocationHint">Indtast placering</sys:String>
+    <sys:String x:Key="SearchButton">Søg efter printere</sys:String>
+    <sys:String x:Key="InfoTooltip">Om</sys:String>
+    <sys:String x:Key="ToggleThemeTooltip">Skift lys/mørk tilstand</sys:String>
+    <sys:String x:Key="ConnectPrinterMenu">Tilslut printer</sys:String>
+    <sys:String x:Key="InstallDriversMenu">Installer drivere…</sys:String>
+    <sys:String x:Key="ColumnHeader_PrinterName">Printernavn</sys:String>
+    <sys:String x:Key="ColumnHeader_Location">Placering</sys:String>
+    <sys:String x:Key="ColumnHeader_Comment">Kommentar</sys:String>
+    <sys:String x:Key="ColumnHeader_SharePath">Delsti</sys:String>
+    <sys:String x:Key="DevelopedByText">Udviklet af Workplace Management</sys:String>
+
+</ResourceDictionary>
