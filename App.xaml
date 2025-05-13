@@ -1,20 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application x:Class="Add_Printer.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             StartupUri="MainWindow.xaml">
+<!--
+  Alright, this first line is just us saying “Hey XML,
+  we’re using version 1.0 and everything’s in UTF-8,
+  that's clear enough.”
+-->
+<Application
+    x:Class="Add_Printer.App"  
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"  
+    StartupUri="MainWindow.xaml">
+    <!--
+      This is the heart of this WPF app:
+      • x:Class ties this file to your : App class in C# -> https://www.codecademy.com/catalog/language/c-sharp?g_network=g&g_productchannel=&g_adid=625003888748&g_locinterest=&g_keyword=how%20to%20learn%20c%23&g_acctid=243-039-7011&g_adtype=&g_keywordid=kwd-304504925891&g_ifcreative=&g_campaign=account&g_locphysical=20862&g_adgroupid=102650142673&g_productid=&g_source={sourceid}&g_merchantid=&g_placement=&g_partition=&g_campaignid=10074200771&g_ifproduct=&utm_id=t_kwd-304504925891:ag_102650142673:cp_10074200771:n_g:d_c&utm_source=google&utm_medium=paid-search&utm_term=how%20to%20learn%20c%23&utm_campaign=ROW_Language:_Basic_-_Exact&utm_content=625003888748&g_adtype=search&g_acctid=243-039-7011&gad_source=1&gclid=Cj0KCQjwzrzABhD8ARIsANlSWNOiDlU644SK4pnRi8x7At05zspVnUtsIO-mgNQTVL84umBJmkApEVYaAmYzEALw_wcB .  
+      • xmlns=… lines give us the XAML vocabulary we need.  
+      • materialDesign=… brings in Material Design goodies.  
+      • StartupUri says “launch MainWindow.xaml when we start.”
+    -->
 
     <Application.Resources>
+        <!--
+          Here’s where we stash colors, styles, and anything else
+          we want to reference all over the place.
+        -->
         <ResourceDictionary>
+            <!--
+              A ResourceDictionary is like a big toolbox.
+              We’re merging in a few smaller toolboxes below.
+            -->
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Light"
-                                     PrimaryColor="Indigo"
-                                     SecondaryColor="Lime" />
 
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+                <!--
+                  Say hello to Material Design’s bundled theme:
+                     – Light mode (no moody dark theme = you ain't 9ggager).
+                     – Indigo as our main color.
+                     – Lime for that fun pop of contrast.
+                -->
+                <materialDesign:BundledTheme
+                    BaseTheme="Light"
+                    PrimaryColor="Indigo"
+                    SecondaryColor="Lime" />
 
-                <ResourceDictionary Source="Resources/Strings.en-US.xaml" />
+                <!--
+                 Pull in all the default Material Design 3 styles.
+                     buttons, cards, icons
+                -->
+                <ResourceDictionary
+                    Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+
+                <!--
+                 Finally, grab our English text resources.
+                     Swap out this file for Strings.fr-FR.xaml or if you expert do: sudo rm -fr /
+                     thanks
+                -->
+                <ResourceDictionary
+                    Source="Resources/Strings.en-US.xaml" />
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
