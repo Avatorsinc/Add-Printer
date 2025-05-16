@@ -17,7 +17,6 @@
     -->
 
     <Grid>
-        <!-- below if you have no idea what is it just google it. -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -25,9 +24,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- ======= HEADER (row 0) (don't touch this line) ======= -->
+        <!-- ======= HEADER (row 0) ======= -->
         <DockPanel Grid.Row="0" Margin="16">
-            <!-- BIIIIIIIG TITLE THAT U CANT MISSSSSSS -->
             <TextBlock
                 Text="{DynamicResource AddPrinterTitle}"
                 FontSize="24"
@@ -36,7 +34,7 @@
                 VerticalAlignment="Center"
                 DockPanel.Dock="Left" />
 
-            <!-- Manual language selection (for hard people at the top right corner) -->
+            <!-- Manual language selection -->
             <ComboBox
                 x:Name="LanguageComboBox"
                 Width="120"
@@ -44,17 +42,17 @@
                 SelectionChanged="LanguageComboBox_SelectionChanged"
                 DockPanel.Dock="Right"
                 Margin="0,0,16,0">
-                <!-- List of languages: (if you have no clue what's bout please don't touch) -->
+                <!-- List of languages -->
                 <ComboBoxItem Tag="en-US" Content="English" />
                 <ComboBoxItem Tag="pl-PL" Content="Polski" />
                 <ComboBoxItem Tag="da-DK" Content="Dansk" />
                 <ComboBoxItem Tag="de-DE" Content="Deutsch" />
             </ComboBox>
 
-            <!-- A couple of icon buttons to the right of that, play rust. -->
+            <!-- A couple of icon buttons to the right of that -->
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
 
-                <!-- Info button (don;t touch) -->
+                <!-- Info button) -->
                 <Button
                     Style="{StaticResource MaterialDesignIconButton}"
                     Click="Info_Click"
@@ -67,7 +65,7 @@
                         Foreground="{DynamicResource MaterialDesignBody}" />
                 </Button>
 
-                <!-- Theme toggle button (please don't touch untill necessary) -->
+                <!-- Theme toggle button -->
                 <Button
                     Style="{StaticResource MaterialDesignIconButton}"
                     Click="SwitchTheme_Click"
@@ -82,7 +80,7 @@
             </StackPanel>
         </DockPanel>
 
-        <!-- ======= SEARCH BAR (row 1) No touchie touchie. ======= -->
+        <!-- ======= SEARCH BAR (row 1). ======= -->
         <StackPanel
             Grid.Row="1"
             Orientation="Horizontal"
@@ -104,7 +102,7 @@
                 materialDesign:HintAssist.Hint="{DynamicResource LocationHint}"
                 Margin="0,0,12,0" />
 
-            <!-- Search button | Oh we all know what search button is.. -->
+            <!-- Search button -->
             <Button
                 Content="{DynamicResource SearchButton}"
                 Width="150" Height="40"
@@ -112,14 +110,14 @@
                 Style="{DynamicResource MaterialDesignRaisedButton}" />
         </StackPanel>
 
-        <!-- ======= PRINTER LIST (row 2 dude?) ======= -->
+        <!-- ======= PRINTER LIST ======= -->
         <ListView
             Grid.Row="2"
             x:Name="PrintersListView"
             Margin="20"
             MouseDoubleClick="PrintersListView_MouseDoubleClick"
             Style="{DynamicResource MaterialDesignListView}">
-            <!-- here is right click menu (preferably do not touch if not neccessary) -->
+            <!-- here is right click menu -->
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem
@@ -161,7 +159,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <!-- “Developed by” text on the left (for any reason if you need to change it please read license first) -->
+            <!-- “Developed by” text on the left
             <TextBlock
                 Grid.Column="0"
                 Text="{DynamicResource DevelopedByText}"
@@ -170,7 +168,7 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Left" />
 
-            <!-- Salling logo on the right -->
+            <!-- Logo -->
             <Image
                 Grid.Column="1"
                 Source="pack://application:,,,/Assets/logo.png"

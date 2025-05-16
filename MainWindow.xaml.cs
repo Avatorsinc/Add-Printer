@@ -17,7 +17,7 @@ namespace Add_Printer
     {
         private readonly PaletteHelper _paletteHelper = new();
 
-        private const string Domain = "dsg.dk";
+        private const string Domain = "domain.com";
         private const string Username = "ServiceAccount";
         private const string Password = "Password";
 
